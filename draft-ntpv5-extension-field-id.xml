@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="rfc7991bis.rnc"?>
+<!DOCTYPE rfc [
+  <!ENTITY nbsp    "&#160;">
+  <!ENTITY zwsp   "&#8203;">
+  <!ENTITY nbhy   "&#8209;">
+  <!ENTITY wj     "&#8288;">
+]>
+<rfc
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  category="std"
+  docName="draft-ntpv5-extension-field-id-latest"
+  ipr="trust200902"
+  obsoletes=""
+  updates=""
+  submissionType="IETF"
+  xml:lang="en"
+  version="3">
+
+  <front>
+    <title abbrev="NTPv5 Extension Field ID">
+      Alternative Timestamp Extension Field for NTP Version 5
+    </title>
+    <seriesInfo name="Internet-Draft" value="draft-ntpv5-extension-field-id-latest"/>
+    
+    <author fullname="Your Name" initials="Y." surname="Name">
+      <organization>Your Organization</organization>
+      <address>
+        <postal>
+          <street></street>
+          <city></city>
+          <region></region>
+          <code></code>
+          <country></country>
+        </postal>
+        <email>your.email@example.com</email>
+      </address>
+    </author>
+    
+    <date year="2025"/>
+    
+    <area>Internet</area>
+    <workgroup>Network Time Protocol</workgroup>
+    <keyword>NTP</keyword>
+    <keyword>NTPv5</keyword>
+    <keyword>Extension Field</keyword>
+    <keyword>Timestamp</keyword>
+    
+    <abstract>
+      <t>
+        This document describes an alternative timestamp extension field 
+        to the Monotonic Receive Timestamp Extension Field defined in 
+        Network Time Protocol version 5 (NTPv5). This extension field 
+        is designed to facilitate the transfer of frequency offset 
+        information between NTP peers.
+      </t>
+    </abstract>
+  </front>
+
+  <middle>
+    <section anchor="intro">
+      <name>Introduction</name>
+      <t>
+        Network Time Protocol version 5 (NTPv5) defines various extension 
+        fields to carry additional information between NTP peers. The 
+        Monotonic Receive Timestamp Extension Field is one such field 
+        that provides monotonic timestamp information.
+      </t>
+      <t>
+        This document specifies an alternative timestamp extension field 
+        that is specifically optimized for transferring frequency offset 
+        information, which is essential for accurate time synchronization 
+        in certain deployment scenarios.
+      </t>
+      
+      <section anchor="terminology">
+        <name>Requirements Language</name>
+        <t>
+          The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+          "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+          "OPTIONAL" in this document are to be interpreted as described in
+          BCP 14 <xref target="RFC2119"/> <xref target="RFC8174"/> when, and only when,
+          they appear in all capitals, as shown here.
+        </t>
+      </section>
+    </section>
+
+    <section anchor="extension-field">
+      <name>Alternative Timestamp Extension Field</name>
+      
+      <section anchor="field-format">
+        <name>Field Format</name>
+        <t>
+          The Alternative Timestamp Extension Field follows the general 
+          extension field format defined in NTPv5. The field structure 
+          is as follows:
+        </t>
+        <artwork><![CDATA[
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|         Field Type            |         Length                |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                               |
+|                      Timestamp (64 bits)                      |
+|                                                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                   Frequency Offset (32 bits)                  |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+]]></artwork>
+        <t>Where:</t>
+        <ul>
+          <li>Field Type: TBD (to be assigned by IANA)</li>
+          <li>Length: The total length of the extension field in octets</li>
+          <li>Timestamp: A 64-bit timestamp value</li>
+          <li>Frequency Offset: A 32-bit signed integer representing the frequency offset</li>
+        </ul>
+      </section>
+      
+      <section anchor="field-semantics">
+        <name>Field Semantics</name>
+        <t>
+          The Alternative Timestamp Extension Field provides both temporal 
+          and frequency information. The timestamp represents the time at 
+          which the frequency offset was measured, while the frequency 
+          offset value indicates the rate at which the local clock differs 
+          from the reference time.
+        </t>
+      </section>
+    </section>
+
+    <section anchor="usage">
+      <name>Usage and Processing</name>
+      <t>
+        NTP implementations that support this extension field SHOULD 
+        include it in NTP packets when frequency offset information is 
+        available and relevant to the peer relationship.
+      </t>
+      <t>
+        Upon receiving this extension field, NTP implementations MAY use 
+        the frequency offset information to improve time synchronization 
+        accuracy and stability.
+      </t>
+    </section>
+
+    <section anchor="security">
+      <name>Security Considerations</name>
+      <t>
+        The security considerations for this extension field are similar 
+        to those for other NTPv5 extension fields. Implementations MUST 
+        ensure that the extension field is authenticated when using NTP's 
+        security mechanisms.
+      </t>
+      <t>
+        Malicious or corrupted frequency offset values could potentially 
+        impact clock synchronization accuracy. Implementations SHOULD 
+        validate received frequency offset values against reasonable bounds 
+        before using them.
+      </t>
+    </section>
+
+    <section anchor="iana">
+      <name>IANA Considerations</name>
+      <t>
+        This document requests IANA to assign a new extension field type 
+        code for the Alternative Timestamp Extension Field from the NTPv5 
+        Extension Field Types registry.
+      </t>
+      <t>
+        Suggested field type: TBD
+      </t>
+      <t>
+        Field name: Alternative Timestamp Extension Field
+      </t>
+    </section>
+  </middle>
+
+  <back>
+    <references>
+      <name>References</name>
+      <references>
+        <name>Normative References</name>
+        <reference anchor="RFC2119" target="https://www.rfc-editor.org/info/rfc2119">
+          <front>
+            <title>Key words for use in RFCs to Indicate Requirement Levels</title>
+            <author initials="S." surname="Bradner" fullname="S. Bradner">
+              <organization/>
+            </author>
+            <date year="1997" month="March"/>
+          </front>
+          <seriesInfo name="BCP" value="14"/>
+          <seriesInfo name="RFC" value="2119"/>
+          <seriesInfo name="DOI" value="10.17487/RFC2119"/>
+        </reference>
+        <reference anchor="RFC8174" target="https://www.rfc-editor.org/info/rfc8174">
+          <front>
+            <title>Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words</title>
+            <author initials="B." surname="Leiba" fullname="B. Leiba">
+              <organization/>
+            </author>
+            <date year="2017" month="May"/>
+          </front>
+          <seriesInfo name="BCP" value="14"/>
+          <seriesInfo name="RFC" value="8174"/>
+          <seriesInfo name="DOI" value="10.17487/RFC8174"/>
+        </reference>
+      </references>
+      <references>
+        <name>Informative References</name>
+        <!-- Add informative references here as needed -->
+      </references>
+    </references>
+
+    <section anchor="acknowledgments" numbered="false">
+      <name>Acknowledgments</name>
+      <t>
+        The authors would like to thank the NTP working group for their 
+        valuable feedback and contributions to this specification.
+      </t>
+    </section>
+  </back>
+</rfc>

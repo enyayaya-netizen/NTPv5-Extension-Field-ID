@@ -1,0 +1,11 @@
+# Generated Internet-Draft files
+*.txt
+*.html
+
+# Temporary files
+*~
+*.swp
+*.bak
+
+# Build artifacts
+.DS_Store
